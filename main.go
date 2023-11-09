@@ -1,19 +1,42 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"flag"
+
+	"github.com/damianbalanz/api-hotel/api"
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
+
+	listenAddr := flag.String("listenAddr", ":8080", "Server runing on port 8080")
+	flag.Parse()
+
 	app := gin.New()
+	apiV1 := app.Group("/api/v1")
 
-	app.GET("/", handleFoo)
+	app.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "hola mundo",
+		})
+	})
+	app.GET("/foo", handleFoo)
+	apiV1.GET("/user", api.HandleGetUsers)
 
-	app.Run(":8080")
+	app.Run(*listenAddr)
 }
+
 func handleFoo(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"a": "a",
 	})
 }
+
+// func handleUser(c *gin.Context) {
+// 	c.JSON(200, gin.H{
+// 		"user": "dami",
+// 	})
+// }
 
 // func runGinServer(config util.Config, store db.Store) {
 // 	server, err := api.NewServer(config, store)
