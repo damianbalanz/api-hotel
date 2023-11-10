@@ -20,8 +20,9 @@ func main() {
 			"message": "hola mundo",
 		})
 	})
-	app.GET("/foo", handleFoo)
+
 	apiV1.GET("/user", api.HandleGetUsers)
+	apiV1.GET("/user/:id", api.HandleGetUsersById)
 
 	app.Run(*listenAddr)
 }
